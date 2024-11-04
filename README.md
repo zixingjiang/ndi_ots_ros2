@@ -1,5 +1,6 @@
 # NDI Optical Tracking Systems ROS2
 [![Licence](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+![Build Status](https://github.com/zixingjiang/ndi_ots_ros2/actions/workflows/ci_jazzy.yml/badge.svg)
 
 This repository contains a `ros2_control` driver for [Northern Digital Inc. (NDI)](https://www.ndigital.com/) manufactured optical tracking systems. This driver is a streamlined and updated version of [ICube-Robotics/ndisys_ros2](https://github.com/ICube-Robotics/ndisys_ros2). A comparison of this driver and ICube-Robotics' driver is shown below.
 
