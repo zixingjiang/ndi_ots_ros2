@@ -69,6 +69,8 @@ ROS2 Jazzy on Linux (this driver is developed and tested on Ubuntu 24.04 LTS).
    ros2 launch ndi_bringup polaris_vega.launch.py ip:=<your_ndi_ip> gui:=true
    ```
    By setting `gui:=true` you can start a Rviz visualization of the polaris vega base frame and the tracker frames. 
+   
+   <img src="ndi_bringup/doc/rviz.gif" width="500">
 
 5. **Access the data**. After starting the driver with the above launch file, you can access the tracking data through the following two methods:
    1. `ros2_control` state interfaces. Taking tracker_1 as an example, its pose can be accessed in
