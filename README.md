@@ -7,8 +7,8 @@ This repository contains a `ros2_control` driver for [Northern Digital Inc. (NDI
 | Feature | This driver | ICube-Robotics' driver |
 | --- | --- | --- |
 | Compatible ROS2 distro | Jazzy (targets on Ubuntu 24.04) | Humble (targets on Ubuntu 22.04) |
-| Data structure of trackers' pose | Uses the [PoseBroadcaster](https://github.com/ros-controls/ros2_controllers/tree/master/pose_broadcaster) from `ros2_controllers` to publish trackers' pose in a standard ROS2 [PoseStamped](https://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/PoseStamped.html) format | Implements a rigid pose broadcaster to publish trackers' pose in a self-defined format |
-|ROS2 TF broadcasting| Supported via [PoseBroadcaster](https://github.com/ros-controls/ros2_controllers/tree/master/pose_broadcaster) | Supported via self-implemented broadcaster |
+| Data structure of trackers' pose | Uses the [`pose_broadcaster`](https://github.com/ros-controls/ros2_controllers/tree/master/pose_broadcaster) from `ros2_controllers` to publish trackers' pose in a standard ROS2 [PoseStamped](https://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/PoseStamped.html) format | Implements a rigid pose broadcaster to publish trackers' pose in a self-defined format |
+|ROS2 TF broadcasting| Supported via `pose_broadcaster` | Supported via self-implemented broadcaster |
 |Shipped with NDI Combined API (C++)| Yes (v1.9.7) | Yes |  
 
 
@@ -30,19 +30,20 @@ ROS2 Jazzy on Linux (this driver is developed and tested on Ubuntu 24.04 LTS).
     cd ~/ndi_ros2_ws/src
     git clone https://github.com/zixingjiang/ndi_ots_ros2.git
     ```
-    Currently, the [PoseBroadcaster](https://github.com/ros-controls/ros2_controllers/tree/master/pose_broadcaster) used by this driver and the new `ros2_control` features it depends on have not yet been synced to the ROS2 Jazzy release (probably in mid-November 2024), for now we have to them from source. To do this, you need to import the `ros2_control` and `ros2_controllers` packages into your workspace using the provided .repos file. 
+    Currently, the `pose_broadcaster` package used by this driver and the new `ros2_control` features it depends on have not yet been synced to the ROS2 Jazzy release (probably in mid-November 2024), for now we have to them from source. To do this, you need to import the `ros2_control` and `ros2_controllers` packages into your workspace using the provided .repos file. 
     ```bash
     vcs import . < ndi_ots_ros2/ndi_ots_ros2.jazzy.repos
     ```
-2. **Install dependencies**.
+2. **Install dependencies**. 
    ```bash
    cd ~/ndi_ros2_ws
    rosdep update --rosdistro=$ROS_DISTRO
    sudo apt update
    rosdep install --from-paths ./ -i -y --rosdistro ${ROS_DISTRO}
    ```
+   If you see `pose_broadcaster`-related error from `ndi_bringup`, don't worry. This is because the `pose_broadcaster` package is not yet in the ROS2 jazzy release. We will build it from source in the next step.
 
-3. **Build PoseBroadcaster**. 
+3. **Build `pose_broadcaster`**. 
     ```bash
     # build ros2_control packages from source
     colcon build --packages-select \
@@ -59,10 +60,10 @@ ROS2 Jazzy on Linux (this driver is developed and tested on Ubuntu 24.04 LTS).
         transmission_interface 
 
     # install the ros2_control packages we just built
-    # we will use them to build PoseBroadcaster later
+    # we will use them to build pose_broadcaster later
     source install/setup.bash
 
-    # build PoseBroadcaster
+    # build pose_broadcaster
     colcon build --packages-select pose_broadcaster
     ```
 4. **Build and source the workspace**. Now we can build and install the driver. 
@@ -74,16 +75,16 @@ ROS2 Jazzy on Linux (this driver is developed and tested on Ubuntu 24.04 LTS).
 
     source install/setup.bash
     ```
-5. **Connect to NDI optical tracking system and bringup the driver**. Connect the NDI system with your PC through Ethernet. The `ndi_bringup` package contains the launch file for a polaris vega system with two trackers loaded (tracker_1: 8700339.rom, tracker_2: 8700340.rom). You can start the driver with the following command. Remainder: you should replace `<you_ndi_ip>` with your setup. 
+5. **Connect to NDI optical tracking system and bringup the driver**. Connect the NDI system with your PC through Ethernet. The `ndi_bringup` package contains the launch file for a polaris vega system with two trackers loaded (`tracker_1`: 8700339.rom, `tracker_2`: 8700340.rom). You can start the driver with the following command. Remainder: you should replace `<you_ndi_ip>` with your setup. 
    ```bash
    ros2 launch ndi_bringup polaris_vega.launch.py ip:=<your_ndi_ip> gui:=true
    ```
-   By setting `gui:=true` you can start a Rviz visualization of the polaris vega base frame and the tracker frames. 
+   By setting `gui:=true` you can start a Rviz visualization of the tracking data.
    
    <img src="ndi_bringup/doc/rviz.gif" width="500">
 
 6. **Access the data**. After starting the driver with the above launch file, you can access the tracking data through the following two methods:
-   1. `ros2_control` state interfaces. Taking tracker_1 as an example, its pose can be accessed in
+   1. **`ros2_control` state interfaces**. Taking `tracker_1` as an example, its pose can be accessed in
       - `tracker_1/position.x`
       - `tracker_1/position.y`
       - `tracker_1/position.z`
@@ -91,7 +92,7 @@ ROS2 Jazzy on Linux (this driver is developed and tested on Ubuntu 24.04 LTS).
       - `tracker_1/orientation.y`
       - `tracker_1/orientation.z`
       - `tracker_1/orientation.w`
-   2. ROS2 topics. Taking tracker_1 as an example, its pose can be accessed in topic `/tracker_1_pose_broadcaster/pose`.
+   2. **ROS2 topics**. Taking `tracker_1` as an example, its pose can be accessed in topic `/tracker_1_pose_broadcaster/pose`.
 
 ## Use this driver in your own project
 If you want to use this driver in your own project, it is recommended to take `ndi_bringup` as an example and write your own bringup package. You may find [this guide](https://github.com/zixingjiang/ndi_ots_ros2/blob/jazzy/ndi_bringup/README.md) helpful. 
