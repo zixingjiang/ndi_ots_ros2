@@ -30,6 +30,10 @@ ROS2 Jazzy on Linux (this driver is developed and tested on Ubuntu 24.04 LTS).
     cd ~/ndi_ros2_ws/src
     git clone https://github.com/zixingjiang/ndi_ots_ros2.git
     ```
+    Currently, the [PoseBroadcaster](https://github.com/ros-controls/ros2_controllers/tree/master/pose_broadcaster) used by this driver and the new `ros2_control` features it depends on have not yet been synced to the ROS2 Jazzy release (probably in mid-November 2024), for now we have to them from source. To do this, you need to import the `ros2_control` and `ros2_controllers` packages into your workspace using the provided .repos file. 
+    ```bash
+    vcs import . < ndi_ots_ros2/ndi_ots_ros2.jazzy.repos
+    ```
 2. **Install dependencies**.
    ```bash
    cd ~/ndi_ros2_ws
@@ -38,11 +42,8 @@ ROS2 Jazzy on Linux (this driver is developed and tested on Ubuntu 24.04 LTS).
    rosdep install --from-paths ./ -i -y --rosdistro ${ROS_DISTRO}
    ```
 
-3. **Build PoseBroadcaster**. Currently, the [PoseBroadcaster](https://github.com/ros-controls/ros2_controllers/tree/master/pose_broadcaster) used by this driver and the new `ros2_control` features it depends on have not yet been synced to the ROS2 Jazzy release (probably in mid-November 2024), so for now we have to build it from source. 
+3. **Build PoseBroadcaster**. 
     ```bash
-    # download the source code (ros2_control and ros2_controllers) for building PoseBroadcaster
-    vcs import src < src/ndi_ots_ros2/ndi_ots_ros2.jazzy.repos
-
     # build ros2_control packages from source
     colcon build --packages-select \
         controller_interface \
@@ -64,7 +65,7 @@ ROS2 Jazzy on Linux (this driver is developed and tested on Ubuntu 24.04 LTS).
     # build PoseBroadcaster
     colcon build --packages-select pose_broadcaster
     ```
-4. **Build and source the workspace**. Now we can build the driver. 
+4. **Build and source the workspace**. Now we can build and install the driver. 
     ```bash
     colcon build --packages-select \
         ndi_bringup \
