@@ -41,7 +41,7 @@ ROS2 Jazzy on Linux (this driver is developed and tested on Ubuntu 24.04 LTS).
    sudo apt update
    rosdep install --from-paths ./ -i -y --rosdistro ${ROS_DISTRO}
    ```
-   If you see `pose_broadcaster`-related error from `ndi_bringup`, don't worry. This is because the `pose_broadcaster` package is not yet in the ROS2 jazzy release. We will build it from source in the next step.
+   If you see `pose_broadcaster`-related error from `ndi_bringup`, don't worry. This is because the `pose_broadcaster` package is not yet in the ROS2 Jazzy release. We will build it from source in the next step.
 
 3. **Build `pose_broadcaster`**. 
     ```bash
