@@ -1,0 +1,9 @@
+<library path="ndi_hardware">
+  <class name="ndi_hardware/NdiTrackerHardwareInterface"
+         type="ndi_hardware::NdiTrackerHardwareInterface"
+         base_class_type="hardware_interface::SensorInterface">
+    <description>
+      ros2_control hardware interface for Northern Digital (NDI) optical tracking systems.
+    </description>
+  </class>
+</library>

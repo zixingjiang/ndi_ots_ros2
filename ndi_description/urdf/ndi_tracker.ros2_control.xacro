@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- 
+    ros2 control tag for a NDI tracker
+    name: name of the tracker
+    srom: path to the srom file defining the tracker 
+    -->
+    <xacro:macro name="ndi_tracker" params="
+        name 
+        srom
+    ">
+        <sensor name="${name}">
+            <state_interface name="position.x"/>
+            <state_interface name="position.y"/>
+            <state_interface name="position.z"/>
+            <state_interface name="orientation.x"/>
+            <state_interface name="orientation.y"/>
+            <state_interface name="orientation.z"/>
+            <state_interface name="orientation.w"/>
+            <param name="srom">${srom}</param>
+        </sensor>
+    </xacro:macro>
+
+</robot>

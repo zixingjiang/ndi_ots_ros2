@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<robot name="polaris_vega_setup" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find ndi_description)/urdf/ndi_tracker.ros2_control.xacro"/>
+    
+    <xacro:arg name="ip" default="0.0.0.0"/>
+
+    <!-- single link represents the base of the polaris vega optical tracking system -->
+    <!-- it cannot be negelected as robot state broadcaster requires at least one "root" link in urdf -->
+    <!-- it will be used as the reference frame in tracker pose broadcasting -->
+    <link name="polaris_vega_base"/>
+
+    <ros2_control name="polaris_vega" type="sensor">        
+        <hardware>
+            <plugin>ndi_hardware/NdiTrackerHardwareInterface</plugin>
+            <param name="ip">$(arg ip)</param>
+        </hardware>
+
+        <!-- BEGIN: add trackers here -->
+        <!-- It is advised to load only the markers you are interested in broadcasting -->
+        <xacro:ndi_tracker 
+            name="tracker_1"
+            srom="$(find ndi_description)/sroms/8700339.rom" 
+        />
+        <xacro:ndi_tracker 
+            name="tracker_2"
+            srom="$(find ndi_description)/sroms/8700340.rom" 
+        />
+        <!-- END: add trackers here -->
+
+    </ros2_control>
+
+</robot>
