@@ -34,6 +34,11 @@ ROS2 Jazzy on Linux (this driver is developed and tested on Ubuntu 24.04 LTS).
     ```bash
     vcs import . < ndi_ots_ros2/ndi_ots_ros2.jazzy.repos
     ```
+    Since `ros2_control` is currently under active development, you may not be able to build it from the latest source code against the released ROS2 Jazzy package due to being out of sync. Therefore, it is recommended that you checkout `ros2_control` to version 4.19.0.
+    ```bash
+    cd ros2_control
+    git checkout 4.19.0
+    ```
 2. **Install dependencies**. 
    ```bash
    cd ~/ndi_ros2_ws
