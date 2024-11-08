@@ -1,6 +1,6 @@
-# NDI Optical Tracking Systems ROS2
+# NDI Optical Tracking Systems ROS2 Driver
 [![Licence](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-![Build Status](https://github.com/zixingjiang/ndi_ots_ros2/actions/workflows/ci_jazzy.yml/badge.svg)
+![Build Status](https://github.com/zixingjiang/ndi_ros2_driver/actions/workflows/ci_jazzy.yml/badge.svg)
 
 This repository contains a `ros2_control` driver for [Northern Digital Inc. (NDI)](https://www.ndigital.com/) manufactured optical tracking systems. This driver is a streamlined and updated version of [ICube-Robotics/ndisys_ros2](https://github.com/ICube-Robotics/ndisys_ros2). A comparison of this driver and ICube-Robotics' driver is shown below.
 
@@ -21,18 +21,18 @@ ROS2 Jazzy on Linux (this driver is developed and tested on Ubuntu 24.04 LTS).
 ## Packages in this repository
 - `ndi_bringup`: This package contains the configuration files used to launch the driver (using polaris vega as an example). It serves not only as an entry point for the driver, but also as a reference for users to configure the driver for their own systems.
 - `ndi_description`: This package contains the .rom file and `ros2_control` macros for describing the NDI optical tracking systems.
-- `ndi_hardware`: This package contains the `ros2_control` hardware interface for NDI optical tracking systems. This package is built upon NDI's Combined API (C++) v1.9.7, which is shipped with this package at [ndi_hardware/external](https://github.com/zixingjiang/ndi_ots_ros2/tree/jazzy/ndi_hardware/external).
+- `ndi_hardware`: This package contains the `ros2_control` hardware interface for NDI optical tracking systems. This package is built upon NDI's Combined API (C++) v1.9.7, which is shipped with this package at [ndi_hardware/external](https://github.com/zixingjiang/ndi_ros2_driver/tree/jazzy/ndi_hardware/external).
 
 ## Getting started
 1. **Clone this repository in your ros2 workspace**. Taking `~/ndi_ros2_ws` as an example:
     ```bash
     mkdir -p ~/ndi_ros2_ws/src
     cd ~/ndi_ros2_ws/src
-    git clone https://github.com/zixingjiang/ndi_ots_ros2.git
+    git clone https://github.com/zixingjiang/ndi_ros2_driver.git
     ```
     Currently, the `pose_broadcaster` package used by this driver and the new `ros2_control` features it depends on have not yet been synced to the ROS2 Jazzy release (probably in mid-November 2024), for now we have to them from source. To do this, you need to import the `ros2_control` and `ros2_controllers` packages into your workspace using the provided .repos file. 
     ```bash
-    vcs import . < ndi_ots_ros2/ndi_ots_ros2.jazzy.repos
+    vcs import . < ndi_ros2_driver/ndi_ros2_driver.jazzy.repos
     ```
     Since `ros2_control` is currently under active development, you may not be able to build it from the latest source code against the released ROS2 Jazzy package due to being out of sync. Therefore, it is recommended that you checkout `ros2_control` to version 4.19.0.
     ```bash
@@ -100,7 +100,7 @@ ROS2 Jazzy on Linux (this driver is developed and tested on Ubuntu 24.04 LTS).
    2. **ROS2 topics**. Taking `tracker_1` as an example, its pose can be accessed in topic `/tracker_1_pose_broadcaster/pose`.
 
 ## Use this driver in your own project
-If you want to use this driver in your own project, it is recommended to take `ndi_bringup` as an example and write your own bringup package. You may find [this guide](https://github.com/zixingjiang/ndi_ots_ros2/blob/jazzy/ndi_bringup/README.md) helpful. 
+If you want to use this driver in your own project, it is recommended to take `ndi_bringup` as an example and write your own bringup package. You may find [this guide](https://github.com/zixingjiang/ndi_ros2_driver/blob/jazzy/ndi_bringup/README.md) helpful. 
 
 ## Acknowledgement
 This driver is written with reference to [ICube-Robotics/ndisys_ros2](https://github.com/ICube-Robotics/ndisys_ros2).
