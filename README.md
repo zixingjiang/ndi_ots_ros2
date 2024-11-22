@@ -7,7 +7,7 @@ This repository contains a `ros2_control` driver for [Northern Digital Inc. (NDI
 | Feature | This driver | ICube-Robotics' driver |
 | --- | --- | --- |
 | Compatible ROS2 distro | Jazzy (targets on Ubuntu 24.04) | Humble (targets on Ubuntu 22.04) |
-| Data structure of trackers' pose | Uses the [`pose_broadcaster`](https://github.com/ros-controls/ros2_controllers/tree/master/pose_broadcaster) from `ros2_controllers` to publish trackers' pose in a standard ROS2 [PoseStamped](https://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/PoseStamped.html) format | Implements a rigid pose broadcaster to publish trackers' pose in a self-defined format |
+| Data structure of trackers' pose | Uses the [`pose_broadcaster`](https://index.ros.org/p/pose_broadcaster/github-ros-controls-ros2_controllers/#jazzy) from `ros2_controllers` to publish trackers' pose in a standard ROS2 [PoseStamped](https://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/PoseStamped.html) format | Implements a rigid pose broadcaster to publish trackers' pose in a self-defined format |
 |ROS2 TF broadcasting| Supported via `pose_broadcaster` | Supported via self-implemented broadcaster |
 |Shipped with NDI Combined API (C++)| Yes (v1.9.7) | Yes |  
 
@@ -30,15 +30,6 @@ ROS2 Jazzy on Linux (this driver is developed and tested on Ubuntu 24.04 LTS).
     cd ~/ndi_ros2_ws/src
     git clone https://github.com/zixingjiang/ndi_ros2_driver.git
     ```
-    Currently, the `pose_broadcaster` package used by this driver and the new `ros2_control` features it depends on have not yet been synced to the ROS2 Jazzy release (probably in mid-November 2024), for now we have to them from source. To do this, you need to import the `ros2_control` and `ros2_controllers` packages into your workspace using the provided .repos file. 
-    ```bash
-    vcs import . < ndi_ros2_driver/ndi_ros2_driver.jazzy.repos
-    ```
-    Since `ros2_control` is currently under active development, you may not be able to build it from the latest source code against the released ROS2 Jazzy package due to being out of sync. Therefore, it is recommended that you checkout `ros2_control` to version 4.19.0.
-    ```bash
-    cd ros2_control
-    git checkout 4.19.0
-    ```
 2. **Install dependencies**. 
    ```bash
    cd ~/ndi_ros2_ws
@@ -46,41 +37,12 @@ ROS2 Jazzy on Linux (this driver is developed and tested on Ubuntu 24.04 LTS).
    sudo apt update
    rosdep install --from-paths ./ -i -y --rosdistro ${ROS_DISTRO}
    ```
-   If you see `pose_broadcaster`-related error from `ndi_bringup`, don't worry. This is because the `pose_broadcaster` package is not yet in the ROS2 Jazzy release. We will build it from source in the next step.
-
-3. **Build `pose_broadcaster`**. 
+3. **Build and source the workspace**. 
     ```bash
-    # build ros2_control packages from source
-    colcon build --packages-select \
-        controller_interface \
-        controller_manager \
-        controller_manager_msgs \
-        hardware_interface \
-        hardware_interface_testing \
-        joint_limits \
-        ros2_control \
-        ros2_control_test_assets \
-        ros2controlcli \
-        rqt_controller_manager \
-        transmission_interface 
-
-    # install the ros2_control packages we just built
-    # we will use them to build pose_broadcaster later
-    source install/setup.bash
-
-    # build pose_broadcaster
-    colcon build --packages-select pose_broadcaster
-    ```
-4. **Build and source the workspace**. Now we can build and install the driver. 
-    ```bash
-    colcon build --packages-select \
-        ndi_bringup \
-        ndi_description \
-        ndi_hardware
-
+    colcon build 
     source install/setup.bash
     ```
-5. **Connect to NDI optical tracking system and bringup the driver**. Connect the NDI system with your PC through Ethernet. The `ndi_bringup` package contains the launch file for a polaris vega system with two trackers loaded (`tracker_1`: 8700339.rom, `tracker_2`: 8700340.rom). You can start the driver with the following command. Remainder: you should replace `<you_ndi_ip>` with your setup. 
+4. **Connect to NDI optical tracking system and bringup the driver**. Connect the NDI system with your PC through Ethernet. The `ndi_bringup` package contains the launch file for a polaris vega system with two trackers loaded (`tracker_1`: 8700339.rom, `tracker_2`: 8700340.rom). You can start the driver with the following command. Remainder: you should replace `<you_ndi_ip>` with your setup. 
    ```bash
    ros2 launch ndi_bringup polaris_vega.launch.py ip:=<your_ndi_ip> gui:=true
    ```
@@ -88,7 +50,7 @@ ROS2 Jazzy on Linux (this driver is developed and tested on Ubuntu 24.04 LTS).
    
    <img src="ndi_bringup/doc/rviz.gif" width="500">
 
-6. **Access the data**. After starting the driver with the above launch file, you can access the tracking data through the following two methods:
+5. **Access the data**. After starting the driver with the above launch file, you can access the tracking data through the following two methods:
    1. **`ros2_control` state interfaces**. Taking `tracker_1` as an example, its pose can be accessed in
       - `tracker_1/position.x`
       - `tracker_1/position.y`
