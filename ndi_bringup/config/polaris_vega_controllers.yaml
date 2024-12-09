@@ -1,9 +1,12 @@
-controller_manager:
+# controller manager for the ros2_control stack
+# - by the prefix "ndi/", we spawn the controller manager under namespace "ndi"
+ndi/controller_manager:
   ros__parameters:
     update_rate: 100 # Hz
 
     # BEGIN: add broadcaster for each tracker here
-    # broadcaster name should be distinct
+    # - broadcaster name should be distinct
+    # - we should not add the prefix "ndi/" here as we have already done this for the controller manager
     tracker_1_pose_broadcaster:
       type: pose_broadcaster/PoseBroadcaster
 
@@ -12,14 +15,15 @@ controller_manager:
     # END: add broadcaster for each tracker here
   
 # BEGIN: configure broadcaster for each tracker here
-# pose_name should be the same as tracker name in URDF
-# frame_id should be the same as base link in URDF
-tracker_1_pose_broadcaster:
+# - pose_name should be the same as tracker name in URDF
+# - frame_id should be the same as base link in URDF
+# - by the prefix "ndi/", we spawn the controllers under namespace "ndi"
+ndi/tracker_1_pose_broadcaster:
   ros__parameters:
     pose_name: "tracker_1"
     frame_id: "polaris_vega_base"
 
-tracker_2_pose_broadcaster:
+ndi/tracker_2_pose_broadcaster:
   ros__parameters:
     pose_name: "tracker_2"
     frame_id: "polaris_vega_base"
